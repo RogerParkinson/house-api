@@ -22,7 +22,7 @@ To install the bindings via [Composer](https://getcomposer.org/), add the follow
     }
   ],
   "require": {
-    "RogerParkinson/house-apiD": "*@dev"
+    "RogerParkinson/house-api": "*@dev"
   }
 }
 ```

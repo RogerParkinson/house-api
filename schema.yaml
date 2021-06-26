@@ -1,0 +1,105 @@
+openapi: "3.0.0"
+servers:
+  - url: http://localhost:8080/api
+info:
+  version: 1.0.0
+  title: House API
+  description: Manage event lists and control siren behaviour.
+  license: {
+    "name": "Apache 2.0",
+    "url": "https://www.apache.org/licenses/LICENSE-2.0.html"
+  }
+paths:
+  /eventLog/events:
+    summary: Get list of events
+    get:
+      tags:
+        - eventLog
+      summary: Get list of events
+      operationId: getEvents
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/EventList"
+
+  /eventLog:
+    summary: delete
+    delete:
+      tags:
+        - eventLog
+      summary: Delete list of events
+      operationId: deleteEvents
+      responses:
+        "200":
+          description: Expected response to a valid request
+
+  /siren:
+    summary: sound siren
+    head:
+      tags:
+        - siren
+      summary: Play the siren sound
+      operationId: playSiren
+      parameters:
+      - in: query
+        name: sirenType
+        schema:
+           type: string
+        description: The type of siren
+        required: true
+      responses:
+        "200":
+          description: Expected response to a valid request
+
+  /siren/mode:
+    get:
+      tags:
+        - siren
+      summary: get the mode of the siren (noisy, quiet)
+      operationId: getMode
+      responses:
+        "200":
+          description: Expected response to a valid request
+          content:
+            application/json:
+              schema:
+                type: boolean
+
+    head:
+      tags:
+        - siren
+      summary: set the mode of the siren (noisy, quiet)
+      operationId: toggleMode
+      responses:
+        "200":
+          description: Expected response to a valid request
+
+components:
+  schemas:
+    Siren:
+       type: string
+       enum:
+          - Mailbox
+          - Gate
+          - Drive
+          
+    EventList:
+      type: array
+      items:
+        $ref: "#/components/schema/Event"
+    Event:
+      required:
+        - battery
+        - title
+        - date
+      properties:
+        battery:
+          type: integer
+        title:
+          type: string
+        date:
+          type: string
+          format: date-time
